@@ -1,0 +1,113 @@
+<?php
+
+namespace Webkul\Product\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Webkul\Product\Contracts\ProductFlat as ProductFlatContract;
+use Laravel\Scout\Searchable;
+use Webkul\Product\Facades\ProductImage;
+use Webkul\Product\Models\ProductImageProxy;
+
+
+class ProductFlat extends Model implements ProductFlatContract
+{
+    use Searchable;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'product_flat';
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
+     * Ignorable attributes.
+     *
+     * @var array
+     */
+    protected $ignorableAttributes = [
+        'pivot',
+        'parent_id',
+        'attribute_family_id',
+    ];
+
+    /**
+     * Get the product that owns the attribute value.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(ProductProxy::modelClass());
+    }
+
+    /**
+     * Get the product that owns the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * Get the product variants that owns the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function variants()
+    {
+        return $this->hasMany(static::class, 'parent_id');
+    }
+
+    /**
+     * Retrieve type instance.
+     *
+     * @return \Webkul\Product\Type\AbstractType
+     */
+    public function getTypeInstance()
+    {
+        return $this->product->getTypeInstance();
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => (string) $this->id, // Converti in stringa
+            'sku' => $this->sku,
+            'name' => $this->name,
+            'description' => $this->description,
+            'price' => (float) $this->price,
+            'price_discounted' => (float) $this->price_special,
+            'url_key' => $this->url_key,
+            'base_image' => (string) $this->getBaseImageUrl(),
+            'brand' => $this->brand,
+            'product_url' => url("products/{$this->url_key}")  // Usiamo url_key per costruire l'URL del prodotto
+
+        ];
+    }
+
+    public function getBaseImageUrl()
+    {
+        $image = $this->images->first();
+        return $image ? $image->url : '/themes/shop/default/build/assets/medium-product-placeholder-3b1a7b7d.webp';
+    }
+
+public function images()
+{
+    return $this->hasMany(ProductImageProxy::modelClass(), 'product_id', 'product_id');
+}
+
+}
