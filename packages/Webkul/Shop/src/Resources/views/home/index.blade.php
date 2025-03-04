@@ -628,8 +628,7 @@
                                                 <div class="product-info">
                                                     <h3 class="product-title">${product.name}</h3>
                                                     <div class="product-price">
-                                                        <span class="original-price">${product.formatted_price}</span>
-                                                        <span class="discounted-price">${product.formatted_price_discounted}</span>
+                                                        <span class="discounted-price">Prezzi da: ${product.formatted_price_discounted} a ${product.formatted_price}</span>
                                                     </div>
                                                 </div>
                                             </a>
