@@ -2,17 +2,14 @@
     $channel = core()->getCurrentChannel();
 @endphp
 
+<!-- SEO Meta Content -->
 @push('meta')
     <meta name="title" content="{{ $channel->home_seo['meta_title'] ?? '' }}" />
     <meta name="description" content="{{ $channel->home_seo['meta_description'] ?? '' }}" />
     <meta name="keywords" content="{{ $channel->home_seo['meta_keywords'] ?? '' }}" />
 @endpush
-
 @push('styles')
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <style>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -56,8 +53,12 @@
             font-size: 1.1rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            color: #000 !important; /* Colore del testo nero con !important */
+            caret-color: #000 !important; /* Colore del cursore nero con !important */
         }
-
+        .search-container input::placeholder {
+    color: #777; /* Colore del placeholder grigio */
+}
         .search-container input:focus {
             outline: none;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -406,10 +407,74 @@
                 font-size: 16px;
             }
         }
+        /* Stili per i risultati di ricerca */
+    .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-radius: 15px;
+        margin-top: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: none;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    /* Assicurati che il dropdown non scompaia */
+    .hero {
+        position: relative;
+        z-index: 10;
+    }
+    
+    .search-container {
+        position: relative;
+        z-index: 10;
+    }
+
+    .search-results a {
+    color: #000 !important;
+    text-decoration: none;
+}
+
+.search-results .flex {
+    display: flex;
+    align-items: center;
+}
+
+.search-results .p-4 {
+    padding: 1rem;
+}
+
+.search-results .hover\:bg-gray-50:hover {
+    background-color: #f9f9f9;
+}
+
+.search-results .w-16 {
+    width: 4rem;
+}
+
+.search-results .h-16 {
+    height: 4rem;
+}
+
+.search-results .object-cover {
+    object-fit: cover;
+}
+
+.search-results .rounded {
+    border-radius: 0.25rem;
+}
+
+.search-results .block {
+    display: block;
+}
     </style>
 @endpush
-
 <x-shop::layouts>
+    <!-- Page Title -->
     <x-slot:title>
         {{ $channel->home_seo['meta_title'] ?? '' }}
     </x-slot>
@@ -420,40 +485,52 @@
         <div class="search-container">
             <i class="icon-search"></i>
             <input 
-                type="search" 
-                id="searchInput"
-                placeholder="Cerca farmaci, integratori, cosmetici..." 
-                autocomplete="off"
-            >
-            <div class="search-results" id="searchResults"></div>
+    type="text"
+    id="hero-search-input"
+    name="query"
+    class="search-input"
+    value="{{ request('query') }}"
+    minlength="{{ core()->getConfigData('catalog.products.search.min_query_length') }}"
+    maxlength="{{ core()->getConfigData('catalog.products.search.max_query_length') }}"
+    placeholder="Cerca farmaci, integratori, cosmetici..." 
+    aria-label="Cerca prodotti"
+    aria-required="true"
+    pattern="[^\\]+"
+    autocomplete="off"
+    style="color: black !important; caret-color: black !important;"
+    oninput="heroSearchProducts()"
+>
+<div id="hero-search-results" class="search-results">
+    <!-- Risultati della ricerca -->
+</div>
         </div>
     </div>
 
-    <div id="main">
-    <section class="icons-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-4">
-                    <div class="icon-item">
-                        <i class="fas fa-search"></i>
-                        <h5>Cerca prodotti in tutti i negozi di farmaci online</h5>
+    <div id="risultati">
+        <section class="icons-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="icon-item">
+                            <i class="fas fa-search"></i>
+                            <h5>Cerca prodotti in tutti i negozi di farmaci online</h5>
+                        </div>
                     </div>
-                </div>
-                <div class="col-4">
-                    <div class="icon-item">
-                        <i class="fas fa-shopping-cart"></i>
-                        <h5>Crea il tuo carrello</h5>
+                    <div class="col-4">
+                        <div class="icon-item">
+                            <i class="fas fa-shopping-cart"></i>
+                            <h5>Crea il tuo carrello</h5>
+                        </div>
                     </div>
-                </div>
-                <div class="col-4">
-                    <div class="icon-item">
-                        <i class="fas fa-percentage"></i>
-                        <h5>Compra la combinazione di prezzi più bassa</h5>
+                    <div class="col-4">
+                        <div class="icon-item">
+                            <i class="fas fa-percentage"></i>
+                            <h5>Compra la combinazione di prezzi più bassa</h5>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
         <section class="graph-section">
             <div class="graph-container">
@@ -492,126 +569,186 @@
             </div>
         </section>
     </div>
-
-    @push('scripts')
-        <script>
-            let originalContent = '';
-            let searchTimeout = null;
-
-            const searchInput = document.getElementById('searchInput');
-            const searchResults = document.getElementById('searchResults');
-            const mainContent = document.getElementById('main');
-
-            // Salva il contenuto originale al caricamento
-            document.addEventListener('DOMContentLoaded', function() {
-                if (mainContent) {
-                    originalContent = mainContent.innerHTML;
-                }
-            });
-
-            // Gestione dell'input di ricerca
-            searchInput.addEventListener('input', function(e) {
-                clearTimeout(searchTimeout);
-                
-                const query = e.target.value;
-                
-                if (query.length < 3) {
-                    searchResults.style.display = 'none';
-                    if (originalContent && mainContent) {
-                        mainContent.innerHTML = originalContent;
-                    }
-                    return;
-                }
-
-                searchTimeout = setTimeout(() => {
-                    performSearch(query);
-                }, 300);
-            });
-
-            // Gestione del click fuori dai risultati
-            document.addEventListener('click', function(e) {
-                if (!searchResults.contains(e.target) && e.target !== searchInput) {
-                    searchResults.style.display = 'none';
-                }
-            });
-
-            // Funzione di ricerca con Typesense
-            async function performSearch(query) {
-                try {
-                    const response = await fetch(`/api/search?q=${query}`);
-                    const data = await response.json();
-                    const products = data?.hits || [];
-
-                    if (products.length > 0) {
-                        updateMainContent(products);
-                        updateSearchDropdown(products);
-                    } else {
-                        if (originalContent && mainContent) {
-                            mainContent.innerHTML = originalContent;
-                        }
-                        searchResults.style.display = 'none';
-                    }
-                } catch (error) {
-                    console.error('Errore durante la ricerca:', error);
-                    searchResults.style.display = 'none';
-                }
+       <script>
+        async function heroSearchProducts() {
+            const query = document.getElementById('hero-search-input').value;
+            const resultsContainer = document.getElementById('hero-search-results');
+            const mainContent = document.getElementById('risultati');
+            
+            // Conserva il contenuto originale se non è già stato salvato
+            if (!window.originalMainContent && query.length === 3) {
+                window.originalMainContent = mainContent.innerHTML;
             }
-
-            // Aggiorna il dropdown dei risultati
-            function updateSearchDropdown(products) {
-                const limitedProducts = products.slice(0, 5);
+    
+            if (query.length < 3) {
+                resultsContainer.style.display = 'none';
+                resultsContainer.innerHTML = '';
                 
-                searchResults.innerHTML = limitedProducts.map(product => `
-                    <a href="${product.url_key}" class="flex items-center p-4 hover:bg-gray-50 transition-colors">
-                        <img src="${product.image}" class="w-16 h-16 object-cover rounded" alt="${product.name}">
-                        <div class="ml-4 flex-1">
-                            <div class="font-medium text-gray-900">${product.name}</div>
-                            <div class="text-gray-600">
-                                ${product.special_price 
-                                    ? `<span class="line-through text-sm">${product.formatted_price}</span>
-                                       <span class="text-red-600 ml-2">${product.formatted_special_price}</span>`
-                                    : `<span>${product.formatted_price}</span>`
-                                }
-                            </div>
-                        </div>
-                    </a>
-                `).join('');
-
-                searchResults.style.display = 'block';
+                // Ripristina il contenuto originale se disponibile
+                if (window.originalMainContent) {
+                    mainContent.innerHTML = window.originalMainContent;
+                }
+                return;
             }
-
-            // Aggiorna la griglia dei prodotti
-            function updateMainContent(products) {
-                if (!mainContent) return;
-
-                mainContent.innerHTML = `
-                    <div class="product-grid">
-                        ${products.map(product => `
-                            <a href="${product.url_key}" class="block">
-                                <div class="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
-                                    <div class="relative pb-[100%]">
-                                        <img 
-                                            src="${product.image}" 
-                                            class="absolute inset-0 w-full h-full object-cover"
-                                            alt="${product.name}"
-                                        >
-                                    </div>
-                                    <div class="p-4">
-                                        <h3 class="font-medium text-lg mb-2">${product.name}</h3>
-                                        <div class="flex items-center justify-between">
-                                            ${product.special_price 
-                                                ? `<span class="text-gray-500 line-through text-sm">${product.formatted_price}</span>
-                                                   <span class="text-red-600 font-medium">${product.formatted_special_price}</span>`
-                                                : `<span class="text-gray-900 font-medium">${product.formatted_price}</span>`
-                                            }
+    
+            try {
+                const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                const products = data?.products || [];
+    
+                // Mostra i risultati nel dropdown
+                if (products.length > 0) {
+                    resultsContainer.style.display = 'block';
+                    resultsContainer.innerHTML = products.map(product => `
+                        <a href="/${product.product_url}" class="block">
+                            <div class="p-4 hover:bg-gray-50">
+                                <div class="flex items-center">
+                                    <img src="${product.base_image}" class="w-16 h-16 object-cover rounded">
+                                    <div style="margin-left: 15px;">
+                                        <div style="font-weight: 500;">${product.name}</div>
+                                        <div style="color: #666;">
+                                            <span style="color: #e53e3e;">${product.formatted_price}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-                        `).join('')}
-                    </div>
-                `;
+                            </div>
+                        </a>
+                    `).join('');
+                    
+                    // Mostra i risultati come griglia nella pagina principale
+                    const productsGrid = `
+                        <section class="product-grid-section">
+                            <div class="container">
+                                <h2 class="text-center my-4">Risultati per "${query}"</h2>
+                                <div class="product-grid">
+                                    ${products.map(product => `
+                                        <div class="product-card">
+                                            <a href="/${product.product_url}">
+                                                <img src="${product.base_image}" alt="${product.name}" class="product-image">
+                                                <div class="product-info">
+                                                    <h3 class="product-title">${product.name}</h3>
+                                                    <div class="product-price">
+                                                        <span class="original-price">${product.formatted_price}</span>
+                                                        <span class="discounted-price">${product.formatted_price_discounted}</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </section>
+                    `;
+                    
+                    // Sostituisci il contenuto del main mantenendo altre sezioni importanti
+                    mainContent.innerHTML = productsGrid;
+                } else {
+                    // Nessun risultato trovato
+                    resultsContainer.style.display = 'block';
+                    resultsContainer.innerHTML = '<div class="p-4 text-center">Nessun prodotto trovato</div>';
+                    
+                    mainContent.innerHTML = `
+                        <section class="no-results-section">
+                            <div class="container text-center my-5">
+                                <i class="fas fa-search" style="font-size: 48px; color: #64d9aa;"></i>
+                                <h2 class="mt-4">Nessun prodotto trovato per "${query}"</h2>
+                                <p class="mt-2">Prova a cercare con un termine diverso o esplora le categorie popolari</p>
+                            </div>
+                        </section>
+                    `;
+                }
+            } catch (error) {
+                console.error('Errore nella ricerca:', error);
+                resultsContainer.style.display = 'none';
+                resultsContainer.innerHTML = '';
             }
-        </script>
-    @endpush
+        }
+    
+        // Aggiungi CSS per la griglia di prodotti
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                .product-grid-section {
+                    padding: 40px 0;
+                    background-color: #f9f9f9;
+                }
+                
+                .product-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                    gap: 24px;
+                    padding: 24px;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+                
+                .product-card {
+                    background: white;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                    overflow: hidden;
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+                
+                .product-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+                }
+                
+                .product-image {
+                    width: 100%;
+                    height: 200px;
+                    object-fit: cover;
+                }
+                
+                .product-info {
+                    padding: 16px;
+                }
+                
+                .product-title {
+                    font-size: 16px;
+                    font-weight: 500;
+                    margin-bottom: 8px;
+                    color: #333;
+                }
+                
+                .product-price {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .original-price {
+                    text-decoration: line-through;
+                    color: #888;
+                    font-size: 14px;
+                }
+                
+                .discounted-price {
+                    color: #e53e3e;
+                    font-weight: 600;
+                    font-size: 16px;
+                }
+            </style>
+        `);
+    
+        // Nascondi i risultati quando si fa clic fuori dalla barra di ricerca
+        document.addEventListener('click', function(e) {
+            const resultsContainer = document.getElementById('hero-search-results');
+            const searchInput = document.getElementById('hero-search-input');
+            
+            if (resultsContainer && !resultsContainer.contains(e.target) && e.target !== searchInput) {
+                resultsContainer.style.display = 'none';
+            }
+        });
+        
+        // Mostra i risultati quando si fa clic nell'input di ricerca
+        document.getElementById('hero-search-input').addEventListener('click', function() {
+            const query = this.value;
+            const resultsContainer = document.getElementById('hero-search-results');
+            
+            if (query.length >= 3 && resultsContainer.innerHTML.trim() !== '') {
+                resultsContainer.style.display = 'block';
+            }
+        });
+    </script>
 </x-shop::layouts>
