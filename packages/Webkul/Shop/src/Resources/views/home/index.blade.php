@@ -558,14 +558,17 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
-            <div class="footer-info">
-                <p>Farmaconviene - Via dell'Industria 14, 20100 Milano</p>
+            <div style="display: flex; justify-content: space-between;">
+            <div class="footer-info" style="text-align: left; width: 45%;">
+                <p><b style="color: #63D8AA">Farmaconviene</b><br>  
+                Via dell'Industria 14, 20100 Milano</p>
                 <p>Numero di registro delle imprese: P.IVA 12345678910</p>
             </div>
-            <div class="footer-links">
-                <a href="/chi-siamo">Chi siamo</a>
-                <a href="/cosa-facciamo">Cosa facciamo</a>
-                <a href="/come-funziona">Come funziona</a>
+            <div class="footer-links" style="text-align: left; width: 45%;">
+                <p><a href="/chi-siamo">Chi siamo <i class="fas fa-arrow-right"></i></a></p>
+                <p><a href="/cosa-facciamo">Cosa facciamo <i class="fas fa-arrow-right"></i></a></p>
+                <p><a href="/come-funziona">Come funziona <i class="fas fa-arrow-right"></i></a></p>
+            </div>
             </div>
         </div>
     </footer>
