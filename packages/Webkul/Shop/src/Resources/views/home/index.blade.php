@@ -609,9 +609,8 @@
                                 <div class="flex items-center">
                                     <img src="${product.base_image}" class="w-16 h-16 object-cover rounded">
                                     <div style="margin-left: 15px;">
-                                        <div style="font-weight: 500;">${product.name}</div>
-                                        <div style="color: #666;">
-                                            <span style="color: #e53e3e;">${product.formatted_price}</span>
+                                        <div style="font-weight: 500;">${product.name}
+                                        <span style="color: #e53e3e;">da: ${product.formatted_price_discounted} a: ${product.formatted_price} </span>
                                         </div>
                                     </div>
                                 </div>
@@ -632,7 +631,7 @@
                                                 <div class="product-info">
                                                     <h3 class="product-title">${product.name}</h3>
                                                     <div class="product-price">
-                                                        <span class="discounted-price">Prezzi da: ${product.formatted_price}</span>
+                                                        <span class="discounted-price">Prezzi da: ${product.formatted_price_discounted} a: ${product.formatted_price} </span>
                                                     </div>
                                                 </div>
                                             </a>
