@@ -42,11 +42,10 @@
 
         @stack('meta')
 
-        <link
-            rel="icon"
-            sizes="16x16"
-            href="{{ core()->getCurrentChannel()->favicon_url ?? bagisto_asset('images/favicon.ico') }}"
-        />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+<link rel="manifest" href="/favicon/site.webmanifest">
 
         @bagistoVite(['src/Resources/assets/css/app.css', 'src/Resources/assets/js/app.js'])
 
@@ -117,10 +116,7 @@
                 <x-shop::layouts.services />
             @endif
 
-            <!-- Page Footer Blade Component -->
-            @if ($hasFooter)
-                <x-shop::layouts.footer />
-            @endif
+            
         </div>
 
         {!! view_render_event('bagisto.shop.layout.body.after') !!}

@@ -8,406 +8,266 @@
     <meta name="description" content="{{ $channel->home_seo['meta_description'] ?? '' }}" />
     <meta name="keywords" content="{{ $channel->home_seo['meta_keywords'] ?? '' }}" />
 @endpush
+
 @push('styles')
 <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
 
-        body {
-            line-height: 1.6;
-        }
+    body {
+        line-height: 1.6;
+    }
 
-        .hero {
-            background: linear-gradient(135deg, #64d9aa 0%, #3fa780 100%);
-            color: #fff;
-            text-align: center;
-            padding: 60px 20px;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+    /* Hero section with the green gradient background */
+    .hero {
+        background-color: #64d9aa;
+        color: #fff;
+        text-align: center;
+        padding: 60px 20px;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        z-index: 10;
+    }
 
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+    .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 30px;
+        font-weight: 700;
+        color: #F4F3C6;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        text-transform: uppercase;
+    }
 
-        .search-container {
-            width: 100%;
-            margin: 0 auto;
-            position: relative;
-        }
+    /* Search container styling */
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10;
+    }
 
-        .search-container input {
-            width: 100%;
-            padding: 20px 60px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            color: #000 !important; /* Colore del testo nero con !important */
-            caret-color: #000 !important; /* Colore del cursore nero con !important */
-        }
-        .search-container input::placeholder {
-    color: #777; /* Colore del placeholder grigio */
-}
-        .search-container input:focus {
-            outline: none;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
+    .search-container input {
+        width: 100%;
+        padding: 20px 60px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        color: #000 !important;
+        caret-color: #000 !important;
+    }
 
-        .search-container i {
-            position: absolute;
-            left: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64d9aa;
-            font-size: 1.2rem;
-        }
+    .search-container input::placeholder {
+        color: #777;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    .search-container input:focus {
+        outline: none;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
 
-        .icons-section {
-            padding: 80px 0;
-        }
+    .search-container i {
+        position: absolute;
+        left: 25px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64d9aa;
+        font-size: 1.2rem;
+    }
 
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: -15px;
-        }
+    /* Search button styling */
+    .search-button {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: #343a40;
+        color: white;
+        border: none;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .col-4 {
-            flex: 0 0 33.333333%;
-            padding: 15px;
-        }
+    /* Features section with icons */
+    .features-section {
+        background-color: #f0f7f4;
+        padding: 40px 0;
+    }
 
-        .icon-item {
-            text-align: center;
-            padding: 30px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
+    .features-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
 
-        .icon-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(100, 217, 170, 0.1);
-        }
+    .feature-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0 20px;
+        margin: 20px 0;
+        max-width: 300px;
+    }
 
-        .icon-item i {
-            font-size: 3rem;
-            color: #64d9aa;
-            margin-bottom: 20px;
-        }
+    .feature-icon {
+        color: #64d9aa;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
 
-        .icon-item h5 {
-            color: #333;
-            font-size: 1.1rem;
-            margin-top: 15px;
-        }
+    .feature-text {
+        font-size: 18px;
+        font-weight: 500;
+        color: #64d9aa;
+    }
 
-        .graph-section {
-            background-color: #f8f9fa;
-            padding: 80px 0;
-        }
+    /* Graph section */
+    .graph-section {
+        background-color: #f8f9fa;
+        padding: 60px 20px;
+    }
 
-        .graph-placeholder {
-            background: #e9ecef;
-            height: 300px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
-            margin: 30px 0;
-        }
+    .graph-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+    }
 
-        .info-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
+    .graph-title {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
 
-        .info-section h3 {
-            color: #333;
-            margin-bottom: 40px;
-            font-size: 2rem;
-        }
+    .graph-image {
+        width: 100%;
+        max-width: 700px;
+        height: auto;
+        margin: 0 auto 20px;
+    }
 
-        .footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 40px 0;
-            text-align: center;
-        }
+    .graph-description {
+        max-width: 600px;
+        margin: 0 auto;
+        font-size: 0.9rem;
+        color: #666;
+    }
 
-        .footer p {
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
+    /* About section */
+    .about-section {
+        background: #F6F6E5;
+        padding: 60px 20px;
+        text-align: center;
+    }
 
-        @media (max-width: 768px) {
-            .col-4 {
-                flex: 0 0 100%;
-            }
-            
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-        }
-        * {
-            font-family: 'Poppins', sans-serif;
-        }
+    .about-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
 
-        .hero {
-            background: linear-gradient(135deg, #64d9aa 0%, #3fa780 100%);
-            color: #fff;
-            text-align: center;
-            padding: 60px 20px;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+    .about-title {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
 
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+    .about-text {
+        max-width: 800px;
+        margin: 0 auto 40px;
+        font-size: 1rem;
+        color: #555;
+    }
 
-        .search-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
+    .company-name {
+        font-weight: 600;
+    }
 
-        .search-container input {
-            width: 100%;
-            padding: 20px 60px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
+    .action-items {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 40px;
+    }
 
-        .search-container input:focus {
-            outline: none;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-        }
+    .action-item {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        width: 200px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .search-container i {
-            position: absolute;
-            left: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64d9aa;
-            font-size: 1.2rem;
-        }
+    .action-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
 
-        .icons-section {
-            padding: 80px 0;
-        }
+    .action-icon {
+        font-size: 2rem;
+        color: #64d9aa;
+        margin-bottom: 15px;
+    }
 
-        .icon-item {
-            text-align: center;
-            padding: 30px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
+    .action-title {
+        font-size: 1.2rem;
+        color: #333;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
 
-        .icon-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(100, 217, 170, 0.1);
-        }
+    /* Footer section */
+    .footer {
+        background-color: #343a40;
+        color: #fff;
+        padding: 40px 20px;
+        text-align: center;
+    }
 
-        .icon-item i {
-            font-size: 3rem;
-            color: #64d9aa;
-            margin-bottom: 20px;
-        }
+    .footer-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
 
-        .icon-item h5 {
-            color: #333;
-            font-size: 1.1rem;
-            margin-top: 15px;
-        }
+    .footer-info {
+        margin-bottom: 20px;
+    }
 
-        .info-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
+    .footer-links a {
+        color: #fff;
+        opacity: 0.8;
+        margin: 0 10px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: opacity 0.3s ease;
+    }
 
-        .info-section h3 {
-            color: #333;
-            margin-bottom: 40px;
-            font-size: 2rem;
-        }
+    .footer-links a:hover {
+        opacity: 1;
+    }
 
-        /* Stili per i risultati di ricerca */
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 15px;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            display: none;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 24px;
-            padding: 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .graph-section {
-            background-color: #f8f9fa;
-            padding: 80px 20px;
-        }
-
-        .graph-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .graph-title {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 40px;
-            font-weight: 600;
-        }
-
-        .graph-placeholder {
-            background: #ffffff;
-            border-radius: 15px;
-            height: 300px;
-            margin: 30px auto;
-            max-width: 800px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .graph-placeholder i {
-            font-size: 48px;
-            color: #64d9aa;
-        }
-
-        .graph-description {
-            font-size: 16px;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .info-section {
-            padding: 80px 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
-
-        .info-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .info-title {
-            font-size: 32px;
-            color: #333;
-            margin-bottom: 30px;
-            font-weight: 600;
-        }
-
-        .info-description {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 60px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .info-features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .info-feature {
-            padding: 30px;
-            background: white;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .info-feature:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(100, 217, 170, 0.1);
-        }
-
-        .info-feature i {
-            font-size: 36px;
-            color: #64d9aa;
-            margin-bottom: 20px;
-        }
-
-        .info-feature h5 {
-            font-size: 20px;
-            color: #333;
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .placeholder-image {
-            background: linear-gradient(45deg, #f1f1f1 25%, #e9e9e9 25%, #e9e9e9 50%, #f1f1f1 50%, #f1f1f1 75%, #e9e9e9 75%, #e9e9e9 100%);
-            background-size: 20px 20px;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 24px;
-        }
-
-        @media (max-width: 768px) {
-            .info-features {
-                grid-template-columns: 1fr;
-            }
-
-            .graph-title, .info-title {
-                font-size: 24px;
-            }
-
-            .info-description {
-                font-size: 16px;
-            }
-        }
-        /* Stili per i risultati di ricerca */
+    /* Search results */
     .search-results {
         position: absolute;
         top: 100%;
@@ -422,57 +282,130 @@
         max-height: 400px;
         overflow-y: auto;
     }
-    
-    /* Assicurati che il dropdown non scompaia */
-    .hero {
-        position: relative;
-        z-index: 10;
-    }
-    
-    .search-container {
-        position: relative;
-        z-index: 10;
-    }
 
     .search-results a {
-    color: #000 !important;
-    text-decoration: none;
-}
+        color: #000 !important;
+        text-decoration: none;
+    }
 
-.search-results .flex {
-    display: flex;
-    align-items: center;
-}
+    .search-results .flex {
+        display: flex;
+        align-items: center;
+    }
 
-.search-results .p-4 {
-    padding: 1rem;
-}
+    .search-results .p-4 {
+        padding: 1rem;
+    }
 
-.search-results .hover\:bg-gray-50:hover {
-    background-color: #f9f9f9;
-}
+    .search-results .hover\:bg-gray-50:hover {
+        background-color: #f9f9f9;
+    }
 
-.search-results .w-16 {
-    width: 4rem;
-}
+    .search-results .w-16 {
+        width: 4rem;
+    }
 
-.search-results .h-16 {
-    height: 4rem;
-}
+    .search-results .h-16 {
+        height: 4rem;
+    }
 
-.search-results .object-cover {
-    object-fit: cover;
-}
+    .search-results .object-cover {
+        object-fit: cover;
+    }
 
-.search-results .rounded {
-    border-radius: 0.25rem;
-}
+    .search-results .rounded {
+        border-radius: 0.25rem;
+    }
 
-.search-results .block {
-    display: block;
-}
-    </style>
+    .search-results .block {
+        display: block;
+    }
+
+    /* Product Grid */
+    .product-grid-section {
+        padding: 40px 0;
+        background-color: #f9f9f9;
+    }
+                
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 24px;
+        padding: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+                
+    .product-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+                
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+                
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+                
+    .product-info {
+        padding: 16px;
+    }
+                
+    .product-title {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #333;
+    }
+                
+    .product-price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+                
+    .original-price {
+        text-decoration: line-through;
+        color: #888;
+        font-size: 14px;
+    }
+                
+    .discounted-price {
+        color: #e53e3e;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 1.8rem;
+        }
+        
+        .feature-item {
+            flex: 0 0 100%;
+        }
+        
+        .action-items {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .action-item {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>
 @endpush
+
 <x-shop::layouts>
     <!-- Page Title -->
     <x-slot:title>
@@ -481,62 +414,102 @@
 
     <!-- Hero Section -->
     <div class="hero">
-        <h1>IL PUNTO DI PARTENZA PER LO SHOPPING FARMACEUTICO</h1>
-        <div class="search-container">
+        <h1>IL PUNTO DI PARTENZA <br>PER LO SHOPPING<br> FARMACEUTICO</h1>
+        <div class="search-container" style="width: 100%;">
             <i class="icon-search"></i>
             <input 
-    type="text"
-    id="hero-search-input"
-    name="query"
-    class="search-input"
-    value="{{ request('query') }}"
-    minlength="{{ core()->getConfigData('catalog.products.search.min_query_length') }}"
-    maxlength="{{ core()->getConfigData('catalog.products.search.max_query_length') }}"
-    placeholder="Cerca farmaci, integratori, cosmetici..." 
-    aria-label="Cerca prodotti"
-    aria-required="true"
-    pattern="[^\\]+"
-    autocomplete="off"
-    style="color: black !important; caret-color: black !important;"
-    oninput="heroSearchProducts()"
->
-<div id="hero-search-results" class="search-results">
-    <!-- Risultati della ricerca -->
-</div>
+                type="text"
+                id="hero-search-input"
+                name="query"
+                class="search-input"
+                value="{{ request('query') }}"
+                minlength="{{ core()->getConfigData('catalog.products.search.min_query_length') }}"
+                maxlength="{{ core()->getConfigData('catalog.products.search.max_query_length') }}"
+                placeholder="Cerca farmaci, integratori, cosmetici..." 
+                aria-label="Cerca prodotti"
+                aria-required="true"
+                pattern="[^\\]+"
+                autocomplete="off"
+                style="color: black !important; caret-color: black !important;"
+                oninput="heroSearchProducts()"
+            >
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+            </button>
+            <div id="hero-search-results" class="search-results">
+                <!-- Search results will be populated here -->
+            </div>
         </div>
     </div>
 
     <div id="risultati">
-        <section class="icons-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-4">
-                        <div class="icon-item">
-                            <i class="fas fa-search"></i>
-                            <h5>Cerca prodotti in tutti i negozi di farmaci online</h5>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="icon-item">
-                            <i class="fas fa-shopping-cart"></i>
-                            <h5>Crea il tuo carrello</h5>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="icon-item">
-                            <i class="fas fa-percentage"></i>
-                            <h5>Compra la combinazione di prezzi più bassa</h5>
-                        </div>
-                    </div>
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="features-container">
+                <div class="feature-item">
+                <img src="{{ asset('1.png') }}" alt="Search icon" class="action-icon">
+                <div class="feature-text">Cerca prodotti in tutti i negozi di farmaci online</div>
+                </div>
+                <div class="feature-item">
+                <img src="{{ asset('2.png') }}" alt="Search icon" class="action-icon">
+                <div class="feature-text">Crea il tuo carrello</div>
+                </div>
+                <div class="feature-item">
+                <img src="{{ asset('3.png') }}" alt="Search icon" class="action-icon">
+                <div class="feature-text">Compra la combinazione di prezzi più bassa</div>
                 </div>
             </div>
         </section>
 
+        <!-- Graph Section -->
         <section class="graph-section">
             <div class="graph-container">
                 <h2 class="graph-title">Risparmio medio dei nostri clienti</h2>
                 <div class="graph-placeholder">
-                    <i class="fas fa-chart-line"></i>
+                    <svg width="700" height="300" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+                        <!-- X-axis -->
+                        <line x1="50" y1="250" x2="650" y2="250" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- Y-axis -->
+                        <line x1="50" y1="50" x2="50" y2="250" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- X-axis labels -->
+                        <text x="100" y="270" text-anchor="middle" fill="#666" font-size="12">1</text>
+                        <text x="200" y="270" text-anchor="middle" fill="#666" font-size="12">2</text>
+                        <text x="300" y="270" text-anchor="middle" fill="#666" font-size="12">3</text>
+                        <text x="400" y="270" text-anchor="middle" fill="#666" font-size="12">4</text>
+                        <text x="500" y="270" text-anchor="middle" fill="#666" font-size="12">5</text>
+                        <text x="600" y="270" text-anchor="middle" fill="#666" font-size="12">6</text>
+                        
+                        <!-- X-axis title -->
+                        <text x="350" y="290" text-anchor="middle" fill="#333" font-size="14">Numero prodotti a carrello</text>
+                        
+                        <!-- Y-axis labels -->
+                        <text x="40" y="250" text-anchor="end" fill="#666" font-size="12">0%</text>
+                        <text x="40" y="200" text-anchor="end" fill="#666" font-size="12">10%</text>
+                        <text x="40" y="150" text-anchor="end" fill="#666" font-size="12">20%</text>
+                        <text x="40" y="100" text-anchor="end" fill="#666" font-size="12">30%</text>
+                        <text x="40" y="50" text-anchor="end" fill="#666" font-size="12">40%</text>
+                        
+                        <!-- Data points -->
+                        <circle cx="100" cy="230" r="6" fill="#64d9aa"/>
+                        <circle cx="200" cy="200" r="6" fill="#64d9aa"/>
+                        <circle cx="300" cy="170" r="6" fill="#64d9aa"/>
+                        <circle cx="400" cy="130" r="6" fill="#64d9aa"/>
+                        <circle cx="500" cy="100" r="6" fill="#64d9aa"/>
+                        <circle cx="600" cy="80" r="6" fill="#64d9aa"/>
+                        
+                        <!-- Line connecting points -->
+                        <path d="M100,230 L200,200 L300,170 L400,130 L500,100 L600,80" stroke="#64d9aa" stroke-width="3" fill="none"/>
+                        
+                        <!-- Data labels -->
+                        <text x="100" y="220" text-anchor="middle" fill="#333" font-size="12">5%</text>
+                        <text x="200" y="190" text-anchor="middle" fill="#333" font-size="12">10%</text>
+                        <text x="300" y="160" text-anchor="middle" fill="#333" font-size="12">20%</text>
+                        <text x="400" y="120" text-anchor="middle" fill="#333" font-size="12">25%</text>
+                        <text x="500" y="90" text-anchor="middle" fill="#333" font-size="12">30%</text>
+                        <text x="600" y="70" text-anchor="middle" fill="#333" font-size="12">35%</text>
+                    </svg>
                 </div>
                 <p class="graph-description">
                     I clienti che acquistano un carrello con elevata quantità di prodotti ottengono uno sconto maggiore.
@@ -544,38 +517,46 @@
             </div>
         </section>
 
-        <section class="info-section">
-            <div class="info-container">
-                <h3 class="info-title">CHI SIAMO E COSA FACCIAMO</h3>
-                <p class="info-description">
-                    <strong>FarmaConveniente</strong> aggrega i prezzi di 2.000.000.000.000 farmaci in libera vendita 
-                    e ti offre la migliore opzione di acquisto sul tuo carrello.
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="about-container">
+                <h3 class="about-title">CHI SIAMO E COSA FACCIAMO</h3>
+                <img src="{{ asset('grafico.png') }}" alt="Farmaconviene" style="width: 400px; margin: 20px auto; display: block;">
+                <div style="border: 4px solid #000; border-bottom: none; border-left:none; border-right:none; padding: 20px; padding-bottom: 0; margin-bottom: 0;">
+                <p class="about-text">
+                    <span class="company-name"><b>Farmaconviene</b></span> aggrega i prezzi di <b>2.000.000.000.000 di farmaci</b> in libera vendita 
+                    e ti offre <b>la migliore opzione di acquisto sul tuo carrello</b>.
                 </p>
                 
-                <div class="info-features">
-                    <div class="info-feature">
-                        <i class="fas fa-magnifying-glass"></i>
-                        <h5>CERCA</h5>
-                    </div>
-                    <div class="info-feature">
-                        <i class="fas fa-scale-balanced"></i>
-                        <h5>CONFRONTA</h5>
-                    </div>
-                    <div class="info-feature">
-                        <i class="fas fa-object-group"></i>
-                        <h5>AGGREGA</h5>
-                    </div>
+                <div class="action-items">
+                    
                 </div>
             </div>
         </section>
     </div>
-       <script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <p>Farmaconviene - Via dell'Industria 14, 20100 Milano</p>
+                <p>Numero di registro delle imprese: P.IVA 12345678910</p>
+            </div>
+            <div class="footer-links">
+                <a href="/chi-siamo">Chi siamo</a>
+                <a href="/cosa-facciamo">Cosa facciamo</a>
+                <a href="/come-funziona">Come funziona</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
         async function heroSearchProducts() {
             const query = document.getElementById('hero-search-input').value;
             const resultsContainer = document.getElementById('hero-search-results');
             const mainContent = document.getElementById('risultati');
             
-            // Conserva il contenuto originale se non è già stato salvato
+            // Save original content if not already saved
             if (!window.originalMainContent && query.length === 3) {
                 window.originalMainContent = mainContent.innerHTML;
             }
@@ -584,7 +565,7 @@
                 resultsContainer.style.display = 'none';
                 resultsContainer.innerHTML = '';
                 
-                // Ripristina il contenuto originale se disponibile
+                // Restore original content if available
                 if (window.originalMainContent) {
                     mainContent.innerHTML = window.originalMainContent;
                 }
@@ -596,7 +577,7 @@
                 const data = await response.json();
                 const products = data?.products || [];
     
-                // Mostra i risultati nel dropdown
+                // Display results in dropdown
                 if (products.length > 0) {
                     resultsContainer.style.display = 'block';
                     resultsContainer.innerHTML = products.map(product => `
@@ -615,11 +596,11 @@
                         </a>
                     `).join('');
                     
-                    // Mostra i risultati come griglia nella pagina principale
+                    // Display results as grid in main page
                     const productsGrid = `
                         <section class="product-grid-section">
                             <div class="container">
-                                <h2 class="text-center my-4">Risultati per "${query}"</h2>
+                                <h2 style="text-align: center; margin: 1rem 0;">Risultati per "${query}"</h2>
                                 <div class="product-grid">
                                     ${products.map(product => `
                                         <div class="product-card">
@@ -628,7 +609,7 @@
                                                 <div class="product-info">
                                                     <h3 class="product-title">${product.name}</h3>
                                                     <div class="product-price">
-                                                        <span class="discounted-price">Prezzi da: ${product.formatted_price_discounted} a ${product.formatted_price}</span>
+                                                        <span class="discounted-price">Prezzi da: ${product.formatted_price}</span>
                                                     </div>
                                                 </div>
                                             </a>
@@ -639,19 +620,19 @@
                         </section>
                     `;
                     
-                    // Sostituisci il contenuto del main mantenendo altre sezioni importanti
+                    // Replace main content while maintaining important sections
                     mainContent.innerHTML = productsGrid;
                 } else {
-                    // Nessun risultato trovato
+                    // No results found
                     resultsContainer.style.display = 'block';
                     resultsContainer.innerHTML = '<div class="p-4 text-center">Nessun prodotto trovato</div>';
                     
                     mainContent.innerHTML = `
                         <section class="no-results-section">
-                            <div class="container text-center my-5">
+                            <div style="text-align: center; padding: 4rem 1rem;">
                                 <i class="fas fa-search" style="font-size: 48px; color: #64d9aa;"></i>
-                                <h2 class="mt-4">Nessun prodotto trovato per "${query}"</h2>
-                                <p class="mt-2">Prova a cercare con un termine diverso o esplora le categorie popolari</p>
+                                <h2 style="margin-top: 1rem;">Nessun prodotto trovato per "${query}"</h2>
+                                <p style="margin-top: 0.5rem;">Prova a cercare con un termine diverso o esplora le categorie popolari</p>
                             </div>
                         </section>
                     `;
@@ -663,74 +644,7 @@
             }
         }
     
-        // Aggiungi CSS per la griglia di prodotti
-        document.head.insertAdjacentHTML('beforeend', `
-            <style>
-                .product-grid-section {
-                    padding: 40px 0;
-                    background-color: #f9f9f9;
-                }
-                
-                .product-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                    gap: 24px;
-                    padding: 24px;
-                    max-width: 1200px;
-                    margin: 0 auto;
-                }
-                
-                .product-card {
-                    background: white;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                    overflow: hidden;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease;
-                }
-                
-                .product-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-                }
-                
-                .product-image {
-                    width: 100%;
-                    height: 200px;
-                    object-fit: cover;
-                }
-                
-                .product-info {
-                    padding: 16px;
-                }
-                
-                .product-title {
-                    font-size: 16px;
-                    font-weight: 500;
-                    margin-bottom: 8px;
-                    color: #333;
-                }
-                
-                .product-price {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-                
-                .original-price {
-                    text-decoration: line-through;
-                    color: #888;
-                    font-size: 14px;
-                }
-                
-                .discounted-price {
-                    color: #e53e3e;
-                    font-weight: 600;
-                    font-size: 16px;
-                }
-            </style>
-        `);
-    
-        // Nascondi i risultati quando si fa clic fuori dalla barra di ricerca
+        // Hide results when clicking outside search bar
         document.addEventListener('click', function(e) {
             const resultsContainer = document.getElementById('hero-search-results');
             const searchInput = document.getElementById('hero-search-input');
@@ -740,7 +654,7 @@
             }
         });
         
-        // Mostra i risultati quando si fa clic nell'input di ricerca
+        // Show results when clicking in search input
         document.getElementById('hero-search-input').addEventListener('click', function() {
             const query = this.value;
             const resultsContainer = document.getElementById('hero-search-results');
