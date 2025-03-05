@@ -17,8 +17,6 @@
 
     {!! view_render_event('bagisto.shop.checkout.cart.header.before') !!}
 
-    
-
     {!! view_render_event('bagisto.shop.checkout.cart.header.after') !!}
 
     <div class="flex-auto">
@@ -309,7 +307,8 @@
                                                 @{{ item.formatted_total }}
                                             </p>
                                         </template>
-
+                                        
+    
                                         {!! view_render_event('bagisto.shop.checkout.cart.total.after') !!}
 
                                         {!! view_render_event('bagisto.shop.checkout.cart.remove_button.before') !!}
@@ -325,9 +324,13 @@
                                         </span>
                                         
                                         {!! view_render_event('bagisto.shop.checkout.cart.remove_button.after') !!}
+                                        
                                     </div>
+                                   
                                 </div>
+                                
                             </div>
+                            
 
                             {!! view_render_event('bagisto.shop.checkout.cart.item.listing.after') !!}
 
@@ -360,60 +363,67 @@
                             </div>
 
                             {!! view_render_event('bagisto.shop.checkout.cart.controls.after') !!}
+                            @include('shop::checkout.cart.summary')
                         </div>
 
                         {!! view_render_event('bagisto.shop.checkout.cart.summary.before') !!}
-                        <!-- Aggiungi qui la tabella di comparazione -->
-<div v-if="savings && savings.length > 0" class="border-b border-zinc-200 p-4 mb-4 mt-[10%]">         <!-- Cart Summary Blade File -->
-         @include('shop::checkout.cart.summary')
-                        
-        {!! view_render_event('bagisto.shop.checkout.cart.summary.after') !!}
-        <p class="text-sm font-medium text-zinc-500 mb-4" style="margin-top: 10%;">
-            Confronto prezzi con altri siti:
-        </p>
-        
-        <table class="w-full">
-            <thead>
-                <tr class="border-b">
-                    <th class="text-left py-2">Farmacia</th>
-                    <th class="text-right py-2">Prezzo</th>
-                    <th class="text-right py-2">Differenza</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr 
-                    v-for="site in savings" 
-                    :key="site.source_table"
-                    class="border-b border-gray-100 hover:bg-gray-50"
-                >
-                    <td class="py-2 text-sm">@{{ site.source_table }}</td>
-                    <td class="py-2 text-right font-medium">@{{ site.total_price }}€</td>
-                    <td 
-                        class="py-2 text-right transition-colors duration-200"
-                        :class="{
-                            'bg-red-50': calculateDifference(site.total_price) > 0,
-                            'bg-green-50': calculateDifference(site.total_price) < 0
-                        }"
-                    >
-                        <span 
-                            :class="{
-                                'text-red-600': calculateDifference(site.total_price) > 0,
-                                'text-green-600': calculateDifference(site.total_price) < 0
-                            }"
-                            class="text-sm"
-                        >
-                            @{{ calculateDifference(site.total_price) }}€ 
-                            (@{{ calculatePercentage(site.total_price) }}%)
-                        </span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                         <!-- Tabella di comparazione prezzi -->
+                         <div v-if="savings && savings.length > 0" class="border-b border-zinc-200 p-4 mb-4 mt-[10%]">
+                                <p class="text-sm font-medium text-zinc-500 mb-4">
+                                    Confronto prezzi con altri siti:
+                                </p>
+                                
+                                <table class="w-full table-fixed border-collapse">
+                                    <thead>
+                                        <tr class="border-b bg-gray-100">
+                                            <th class="py-3 px-4 text-left w-1/3">Farmacia</th>
+                                            <th class="py-3 px-4 text-center w-1/3">Prezzo</th>
+                                            <th class="py-3 px-4 text-center w-1/3">Differenza</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr 
+                                            v-for="site in savings" 
+                                            :key="site.source_table"
+                                            class="border-b hover:bg-gray-50"
+                                        >
+                                            <td class="py-3 px-4 text-left whitespace-nowrap">@{{ site.source_table }}</td>
+                                            <td class="py-3 px-4 text-center font-medium">
+                                                <span v-if="isValidPrice(site.total_price)">@{{ formatCurrency(site.total_price) }}</span>
+                                                <span v-else>-</span>
+                                            </td>
+                                            <td 
+                                                class="py-3 px-4 text-center transition-colors duration-200"
+                                                :class="{
+                                                    'bg-red-50': isValidDifference(site.total_price) && calculateDifference(site.total_price) > 0,
+                                                    'bg-green-50': isValidDifference(site.total_price) && calculateDifference(site.total_price) < 0
+                                                }"
+                                            >
+                                                <span 
+                                                    v-if="isValidDifference(site.total_price)"
+                                                    :class="{
+                                                        'text-red-600': calculateDifference(site.total_price) > 0,
+                                                        'text-green-600': calculateDifference(site.total_price) < 0
+                                                    }"
+                                                    class="text-sm"
+                                                >
+                                                    @{{ formatCurrency(calculateDifference(site.total_price)) }} 
+                                                    (@{{ calculatePercentage(site.total_price) }}%)
+                                                </span>
+                                                <span v-else class="text-sm">-</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Fine tabella di comparazione prezzi -->
+                        <!-- Cart Summary Blade File -->
                        
                         
+                        {!! view_render_event('bagisto.shop.checkout.cart.summary.after') !!}
+                        
+                        
                     </div>
-                    
 
                     <!-- Empty Cart Section -->
                     <div
@@ -469,12 +479,11 @@
 
                 mounted() {
                     this.getCart();
-                    this.calculateSavings();
                 },
 
                 computed: {
                     selectedItemsCount() {
-                        return this.cart.items.filter(item => item.selected).length;
+                        return this.cart?.items?.filter(item => item.selected)?.length || 0;
                     },
                 },
 
@@ -485,10 +494,14 @@
                             return;
                         }
 
-                        const minsanCodes = this.cart.items.map(item => item.sku);
+                        // Ottieni gli SKU e le quantità
+                        const items = this.cart.items.map(item => ({
+                            sku: item.sku,
+                            quantity: this.applied.quantity[item.id] || item.quantity
+                        }));
 
                         this.$axios.post('{{ route('shop.api.calculate.savings') }}', {
-                            minsanCodes: minsanCodes
+                            items: items
                         })
                         .then(response => {
                             this.savings = response.data.savings;
@@ -498,22 +511,48 @@
                             this.savings = null;
                         });
                     },
+
+                    isValidPrice(price) {
+                        return price !== null && !isNaN(parseFloat(price)) && parseFloat(price) > 0;
+                    },
+
+                    formatCurrency(value) {
+                        if (value === null || isNaN(parseFloat(value))) return '-';
+                        return parseFloat(value).toFixed(2) + '€';
+                    },
+
+                    isValidDifference(sitePrice) {
+                        if (!this.isValidPrice(sitePrice)) return false;
+                        if (!this.cart?.grand_total) return false;
+                        
+                        const cartTotal = parseFloat(this.cart.grand_total);
+                        return !isNaN(cartTotal) && cartTotal > 0;
+                    },
+
                     calculateDifference(sitePrice) {
+                        if (!this.isValidDifference(sitePrice)) return null;
+                        
                         const cartTotal = parseFloat(this.cart.grand_total);
-                        const difference = (parseFloat(sitePrice) - cartTotal).toFixed(2);
-                        return difference;
+                        const price = parseFloat(sitePrice);
+                        return (price - cartTotal).toFixed(2);
                     },
+
                     calculatePercentage(sitePrice) {
+                        if (!this.isValidDifference(sitePrice)) return null;
+                        
                         const cartTotal = parseFloat(this.cart.grand_total);
-                        const difference = parseFloat(sitePrice) - cartTotal;
-                        const percentage = ((difference / cartTotal) * 100).toFixed(2);
-                        return percentage;
+                        if (cartTotal === 0) return '0';
+                        
+                        const price = parseFloat(sitePrice);
+                        const difference = price - cartTotal;
+                        return ((difference / cartTotal) * 100).toFixed(2);
                     },
+
                     getCart() {
                         this.$axios.get('{{ route('shop.api.checkout.cart.index') }}')
                             .then(response => {
                                 this.cart = response.data.data;
-                                this.calculateSavings(); // Aggiungi questa chiamata
+                                this.calculateSavings();
                                 this.isLoading = false;
 
                                 if (response.data.message) {
@@ -528,12 +567,16 @@
                     },
 
                     selectAll() {
+                        if (!this.cart?.items) return;
+                        
                         for (let item of this.cart.items) {
                             item.selected = this.allSelected;
                         }
                     },
 
                     updateAllSelected() {
+                        if (!this.cart?.items?.length) return;
+                        
                         this.allSelected = this.cart.items.every(item => item.selected);
                     },
 
@@ -543,8 +586,11 @@
                         this.$axios.put('{{ route('shop.api.checkout.cart.update') }}', { qty: this.applied.quantity })
                             .then(response => {
                                 this.cart = response.data.data;
-                                this.calculateSavings(); // Aggiungi questa chiamata
-
+                                
+                                // Ricalcola i risparmi dopo l'aggiornamento
+                                this.$nextTick(() => {
+                                    this.calculateSavings();
+                                });
 
                                 if (response.data.message) {
                                     this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
@@ -553,7 +599,6 @@
                                 }
 
                                 this.isStoring = false;
-
                             })
                             .catch(error => {
                                 this.isStoring = false;
@@ -563,7 +608,6 @@
                     setItemQuantity(itemId, quantity) {
                         this.applied.quantity[itemId] = quantity;
                         this.update();
-
                     },
 
                     removeItem(itemId) {
@@ -575,11 +619,13 @@
                                     })
                                     .then(response => {
                                         this.cart = response.data.data;
-                                        this.calculateSavings(); // Aggiungi questa chiamata
-
+                                        
+                                        // Ricalcola i risparmi dopo la rimozione
+                                        this.$nextTick(() => {
+                                            this.calculateSavings();
+                                        });
 
                                         this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
-
                                     })
                                     .catch(error => {});
                             }
@@ -597,13 +643,15 @@
                                     })
                                     .then(response => {
                                         this.cart = response.data.data;
-                                        this.calculateSavings(); // Aggiungi questa chiamata
-
+                                        
+                                        // Ricalcola i risparmi dopo la rimozione
+                                        this.$nextTick(() => {
+                                            this.calculateSavings();
+                                        });
 
                                         this.$emitter.emit('update-mini-cart', response.data.data );
 
                                         this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
-
                                     })
                                     .catch(error => {});
                             }
@@ -623,20 +671,20 @@
                                     })
                                     .then(response => {
                                         this.cart = response.data.data;
-                                        this.calculateSavings(); // Aggiungi questa chiamata
-
+                                        
+                                        // Ricalcola i risparmi dopo lo spostamento
+                                        this.$nextTick(() => {
+                                            this.calculateSavings();
+                                        });
 
                                         this.$emitter.emit('update-mini-cart', response.data.data );
 
                                         this.$emitter.emit('add-flash', { type: 'success', message: response.data.message });
-
                                     })
                                     .catch(error => {});
                             }
                         });
-                    },
-                
-
+                    }
                 }
             });
         </script>
