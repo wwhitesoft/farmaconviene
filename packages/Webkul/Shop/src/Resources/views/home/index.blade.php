@@ -10,6 +10,7 @@
 @endpush
 
 @push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
     * {
         margin: 0;
@@ -76,7 +77,7 @@
 
     .search-container i {
         position: absolute;
-        left: 25px;
+        left: 0px;
         top: 50%;
         transform: translateY(-50%);
         color: #64d9aa;
@@ -416,7 +417,6 @@
     <div class="hero">
         <h1>IL PUNTO DI PARTENZA <br>PER LO SHOPPING<br> FARMACEUTICO</h1>
         <div class="search-container" style="width: 100%;">
-            <i class="icon-search"></i>
             <input 
                 type="text"
                 id="hero-search-input"
@@ -434,7 +434,7 @@
                 oninput="heroSearchProducts()"
             >
             <button class="search-button">
-                <i class="fas fa-search"></i>
+                <i class="fas fa-search" style="color: white; display: flex; justify-content: center; align-items: center; width: 100%;"></i>
             </button>
             <div id="hero-search-results" class="search-results">
                 <!-- Search results will be populated here -->
@@ -464,56 +464,76 @@
         <!-- Graph Section -->
         <section class="graph-section">
             <div class="graph-container">
-                <h2 class="graph-title">Risparmio medio dei nostri clienti</h2>
-                <div class="graph-placeholder">
-                    <svg width="700" height="300" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
-                        <!-- X-axis -->
-                        <line x1="50" y1="250" x2="650" y2="250" stroke="#333" stroke-width="2"/>
-                        
-                        <!-- Y-axis -->
-                        <line x1="50" y1="50" x2="50" y2="250" stroke="#333" stroke-width="2"/>
-                        
-                        <!-- X-axis labels -->
-                        <text x="100" y="270" text-anchor="middle" fill="#666" font-size="12">1</text>
-                        <text x="200" y="270" text-anchor="middle" fill="#666" font-size="12">2</text>
-                        <text x="300" y="270" text-anchor="middle" fill="#666" font-size="12">3</text>
-                        <text x="400" y="270" text-anchor="middle" fill="#666" font-size="12">4</text>
-                        <text x="500" y="270" text-anchor="middle" fill="#666" font-size="12">5</text>
-                        <text x="600" y="270" text-anchor="middle" fill="#666" font-size="12">6</text>
-                        
-                        <!-- X-axis title -->
-                        <text x="350" y="290" text-anchor="middle" fill="#333" font-size="14">Numero prodotti a carrello</text>
-                        
-                        <!-- Y-axis labels -->
-                        <text x="40" y="250" text-anchor="end" fill="#666" font-size="12">0%</text>
-                        <text x="40" y="200" text-anchor="end" fill="#666" font-size="12">10%</text>
-                        <text x="40" y="150" text-anchor="end" fill="#666" font-size="12">20%</text>
-                        <text x="40" y="100" text-anchor="end" fill="#666" font-size="12">30%</text>
-                        <text x="40" y="50" text-anchor="end" fill="#666" font-size="12">40%</text>
-                        
-                        <!-- Data points -->
-                        <circle cx="100" cy="230" r="6" fill="#64d9aa"/>
-                        <circle cx="200" cy="200" r="6" fill="#64d9aa"/>
-                        <circle cx="300" cy="170" r="6" fill="#64d9aa"/>
-                        <circle cx="400" cy="130" r="6" fill="#64d9aa"/>
-                        <circle cx="500" cy="100" r="6" fill="#64d9aa"/>
-                        <circle cx="600" cy="80" r="6" fill="#64d9aa"/>
-                        
-                        <!-- Line connecting points -->
-                        <path d="M100,230 L200,200 L300,170 L400,130 L500,100 L600,80" stroke="#64d9aa" stroke-width="3" fill="none"/>
-                        
-                        <!-- Data labels -->
-                        <text x="100" y="220" text-anchor="middle" fill="#333" font-size="12">5%</text>
-                        <text x="200" y="190" text-anchor="middle" fill="#333" font-size="12">10%</text>
-                        <text x="300" y="160" text-anchor="middle" fill="#333" font-size="12">20%</text>
-                        <text x="400" y="120" text-anchor="middle" fill="#333" font-size="12">25%</text>
-                        <text x="500" y="90" text-anchor="middle" fill="#333" font-size="12">30%</text>
-                        <text x="600" y="70" text-anchor="middle" fill="#333" font-size="12">35%</text>
-                    </svg>
-                </div>
-                <p class="graph-description">
-                    I clienti che acquistano un carrello con elevata quantità di prodotti ottengono uno sconto maggiore.
-                </p>
+            <h2 class="graph-title">Risparmio medio dei nostri clienti</h2>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 30px;">
+            <div style="width: 65%;">
+            <svg width="700" height="300" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background grid -->
+            <g stroke="#ddd" stroke-dasharray="4">
+            <!-- Horizontal grid lines -->
+            <line x1="50" y1="50" x2="650" y2="50" stroke-width="1"/>
+            <line x1="50" y1="100" x2="650" y2="100" stroke-width="1"/>
+            <line x1="50" y1="150" x2="650" y2="150" stroke-width="1"/>
+            <line x1="50" y1="200" x2="650" y2="200" stroke-width="1"/>
+            <line x1="50" y1="250" x2="650" y2="250" stroke-width="1"/>
+            
+            <!-- Vertical grid lines -->
+            <line x1="100" y1="50" x2="100" y2="250" stroke-width="1"/>
+            <line x1="200" y1="50" x2="200" y2="250" stroke-width="1"/>
+            <line x1="300" y1="50" x2="300" y2="250" stroke-width="1"/>
+            <line x1="400" y1="50" x2="400" y2="250" stroke-width="1"/>
+            <line x1="500" y1="50" x2="500" y2="250" stroke-width="1"/>
+            <line x1="600" y1="50" x2="600" y2="250" stroke-width="1"/>
+            </g>
+            
+            <!-- X-axis -->
+            <line x1="50" y1="250" x2="650" y2="250" stroke="#333" stroke-width="2"/>
+            
+            <!-- Y-axis -->
+            <line x1="50" y1="50" x2="50" y2="250" stroke="#333" stroke-width="2"/>
+            
+            <!-- X-axis labels -->
+            <text x="100" y="270" text-anchor="middle" fill="#666" font-size="12">1</text>
+            <text x="200" y="270" text-anchor="middle" fill="#666" font-size="12">2</text>
+            <text x="300" y="270" text-anchor="middle" fill="#666" font-size="12">3</text>
+            <text x="400" y="270" text-anchor="middle" fill="#666" font-size="12">4</text>
+            <text x="500" y="270" text-anchor="middle" fill="#666" font-size="12">5</text>
+            <text x="600" y="270" text-anchor="middle" fill="#666" font-size="12">6</text>
+            
+            <!-- X-axis title -->
+            <text x="350" y="290" text-anchor="middle" fill="#333" font-size="14">Numero prodotti a carrello</text>
+            
+            <!-- Y-axis labels -->
+            <text x="40" y="250" text-anchor="end" fill="#666" font-size="12">0%</text>
+            <text x="40" y="200" text-anchor="end" fill="#666" font-size="12">10%</text>
+            <text x="40" y="150" text-anchor="end" fill="#666" font-size="12">20%</text>
+            <text x="40" y="100" text-anchor="end" fill="#666" font-size="12">30%</text>
+            <text x="40" y="50" text-anchor="end" fill="#666" font-size="12">40%</text>
+            
+            <!-- Data points with dark blue backgrounds -->
+            <circle cx="100" cy="230" r="16" fill="#1a365d"/>
+            <circle cx="200" cy="200" r="16" fill="#1a365d"/>
+            <circle cx="300" cy="170" r="16" fill="#1a365d"/>
+            <circle cx="400" cy="130" r="16" fill="#1a365d"/>
+            <circle cx="500" cy="100" r="16" fill="#1a365d"/>
+            <circle cx="600" cy="80" r="16" fill="#1a365d"/>
+            
+            <!-- Line connecting points -->
+            <path d="M100,230 L200,200 L300,170 L400,130 L500,100 L600,80" stroke="#64d9aa" stroke-width="3" fill="none"/>
+            
+            <!-- Text inside circles -->
+            <text x="100" y="234" text-anchor="middle" fill="white" font-size="12" font-weight="bold">5%</text>
+            <text x="200" y="204" text-anchor="middle" fill="white" font-size="12" font-weight="bold">10%</text>
+            <text x="300" y="174" text-anchor="middle" fill="white" font-size="12" font-weight="bold">20%</text>
+            <text x="400" y="134" text-anchor="middle" fill="white" font-size="12" font-weight="bold">25%</text>
+            <text x="500" y="104" text-anchor="middle" fill="white" font-size="12" font-weight="bold">30%</text>
+            <text x="600" y="84" text-anchor="middle" fill="white" font-size="12" font-weight="bold">35%</text>
+            </svg>
+            </div>
+            <div style="width: 30%; display: flex; align-items: flex-start; padding: 20px;">
+            <p style="margin: 0; line-height: 1.6; text-align: left;">I clienti che acquistano <b>un carrello con elevata quantità di prodotti</b> ottengono uno sconto maggiore.
+            </p>
+            </div>
             </div>
         </section>
 
@@ -521,7 +541,7 @@
         <section class="about-section">
             <div class="about-container">
                 <h3 class="about-title">CHI SIAMO E COSA FACCIAMO</h3>
-                <img src="{{ asset('grafico.png') }}" alt="Farmaconviene" style="width: 400px; margin: 20px auto; display: block;">
+                <img src="{{ asset('grafico.png') }}" alt="Farmaconviene" style="width: 600px; margin: 20px auto; display: block;">
                 <div style="border: 4px solid #000; border-bottom: none; border-left:none; border-right:none; padding: 20px; padding-bottom: 0; margin-bottom: 0;">
                 <p class="about-text">
                     <span class="company-name"><b>Farmaconviene</b></span> aggrega i prezzi di <b>2.000.000.000.000 di farmaci</b> in libera vendita 
