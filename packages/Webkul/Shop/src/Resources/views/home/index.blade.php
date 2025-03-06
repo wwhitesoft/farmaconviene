@@ -425,7 +425,7 @@
                 value="{{ request('query') }}"
                 minlength="{{ core()->getConfigData('catalog.products.search.min_query_length') }}"
                 maxlength="{{ core()->getConfigData('catalog.products.search.max_query_length') }}"
-                placeholder="Cerca farmaci, integratori, cosmetici..." 
+                placeholder="Search for drugs, supplements, cosmetics..." 
                 aria-label="Cerca prodotti"
                 aria-required="true"
                 pattern="[^\\]+"
