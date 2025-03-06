@@ -415,7 +415,7 @@
 
     <!-- Hero Section -->
     <div class="hero">
-        <h1>IL PUNTO DI PARTENZA <br>PER LO SHOPPING<br> FARMACEUTICO</h1>
+        <h1>ALWAYS BUY YOUR<br>PHARMACY CART<br>AT THE BEST PRICE </h1>
         <div class="search-container" style="width: 100%;">
             <input 
                 type="text"
@@ -448,15 +448,16 @@
             <div class="features-container">
                 <div class="feature-item">
                 <img src="{{ asset('1.png') }}" alt="Search icon" class="action-icon">
-                <div class="feature-text">Cerca prodotti in tutti i negozi di farmaci online</div>
+                <div class="feature-text">Here you ALWAYS FIND EVERYTHING available for sale online.</div>
                 </div>
                 <div class="feature-item">
                 <img src="{{ asset('2.png') }}" alt="Search icon" class="action-icon">
-                <div class="feature-text">Crea il tuo carrello</div>
+                <div class="feature-text">Create YOUR CART
+                </div>
                 </div>
                 <div class="feature-item">
                 <img src="{{ asset('3.png') }}" alt="Search icon" class="action-icon">
-                <div class="feature-text">Compra la combinazione di prezzi più bassa</div>
+                <div class="feature-text">BUY YOUR CART AT THE LOWEST AVAILABLE PRICE: guaranteed by math algorithm</div>
                 </div>
             </div>
         </section>
@@ -464,7 +465,7 @@
         <!-- Graph Section -->
         <section class="graph-section">
             <div class="graph-container">
-            <h2 class="graph-title">Risparmio medio dei nostri clienti</h2>
+            <h2 class="graph-title">Average savings using our service</h2>
             <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 30px;">
             <div style="width: 65%;">
             <svg width="700" height="300" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg">
@@ -501,7 +502,7 @@
             <text x="600" y="270" text-anchor="middle" fill="#666" font-size="12">6</text>
             
             <!-- X-axis title -->
-            <text x="350" y="290" text-anchor="middle" fill="#333" font-size="14">Numero prodotti a carrello</text>
+            <text x="350" y="290" text-anchor="middle" fill="#333" font-size="14">Number of products and cart</text>
             
             <!-- Y-axis labels -->
             <text x="40" y="250" text-anchor="end" fill="#666" font-size="12">0%</text>
@@ -531,7 +532,7 @@
             </svg>
             </div>
             <div style="width: 30%; display: flex; align-items: flex-start; padding: 20px;">
-            <p style="margin: 0; line-height: 1.6; text-align: left;">I clienti che acquistano <b>un carrello con elevata quantità di prodotti</b> ottengono uno sconto maggiore.
+            <p style="margin: 0; line-height: 1.6; text-align: left;">The <b>average savings</b> using our service is <a>30% for a cart of 6 products</b> compared to the average online price and <b>50% compared to a physical pharmacy</b>.
             </p>
             </div>
             </div>
@@ -540,12 +541,12 @@
         <!-- About Section -->
         <section class="about-section">
             <div class="about-container">
-                <h3 class="about-title">CHI SIAMO E COSA FACCIAMO</h3>
+                <h3 class="about-title">WHAT WE DO</h3>
                 <img src="{{ asset('grafico.png') }}" alt="Farmaconviene" style="width: 600px; margin: 20px auto; display: block;">
                 <div style="border: 4px solid #000; border-bottom: none; border-left:none; border-right:none; padding: 20px; padding-bottom: 0; margin-bottom: 0;">
                 <p class="about-text">
-                    <span class="company-name"><b>Farmaconviene</b></span> aggrega i prezzi di <b>2.000.000.000.000 di farmaci</b> in libera vendita 
-                    e ti offre <b>la migliore opzione di acquisto sul tuo carrello</b>.
+                    <span class="company-name"><b>Pharmabuy.online<b> aggregates 10,000,000+ prices of all over-the-counter medications and <b>always offers you the best purchasing option for your cart.</b></span> 
+    
                 </p>
                 
                 <div class="action-items">
@@ -560,14 +561,14 @@
         <div class="footer-container">
             <div style="display: flex; justify-content: space-between;">
             <div class="footer-info" style="text-align: left; width: 45%;">
-                <p><b style="color: #63D8AA">Farmaconviene</b><br>  
+                <p><b style="color: #63D8AA">Pharmabuy.online</b><br>  
                 Via dell'Industria 14, 20100 Milano</p>
                 <p>Numero di registro delle imprese: P.IVA 12345678910</p>
             </div>
             <div class="footer-links" style="text-align: left; width: 45%;">
-                <p><a href="/chi-siamo">Chi siamo <i class="fas fa-arrow-right"></i></a></p>
-                <p><a href="/cosa-facciamo">Cosa facciamo <i class="fas fa-arrow-right"></i></a></p>
-                <p><a href="/come-funziona">Come funziona <i class="fas fa-arrow-right"></i></a></p>
+                <p><a href="/chi-siamo">Who we are <i class="fas fa-arrow-right"></i></a></p>
+                <p><a href="/cosa-facciamo">What we do <i class="fas fa-arrow-right"></i></a></p>
+                <p><a href="/come-funziona">How it works <i class="fas fa-arrow-right"></i></a></p>
             </div>
             </div>
         </div>
