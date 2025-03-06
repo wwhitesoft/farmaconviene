@@ -1,6 +1,6 @@
 <!-- Mini Cart Vue Component -->
 <v-mini-cart>
-    <a href="https://farmaconviene.test/checkout/cart">
+    <a href="https://farmaconviene.com/checkout/cart">
         <span
             class="icon-cart cursor-pointer text-2xl"
             role="button"
@@ -14,7 +14,7 @@
         type="text/x-template"
         id="v-mini-cart-template"
     >
-        <a href="https://farmaconviene.test/checkout/cart">
+        <a href="https://farmaconviene.com/checkout/cart">
             <span class="relative">
                 <span
                     class="icon-cart cursor-pointer text-2xl"
